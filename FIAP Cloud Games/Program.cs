@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using FIAP_Cloud_Games.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,6 +95,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<CorrelationIdMiddleware>();
+app.UseMiddleware<DatabaseLoggingMiddleware>();
 
 app.UseHttpsRedirection();
 
