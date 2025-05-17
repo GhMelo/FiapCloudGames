@@ -44,6 +44,7 @@ namespace FIAP_Cloud_Games.Controllers
                             Id = u.Id,
                             DataCriacao = u.DataCriacao,
                             UsuarioId = u.UsuarioId,
+                            JogoId = u.JogoId,
                             Usuario = new UsuarioDto()
                             {
                                 Id = u.Usuario.Id,
@@ -79,6 +80,10 @@ namespace FIAP_Cloud_Games.Controllers
                 {
                     jogoDto.UsuariosQueAdquiriram.Add(new UsuarioJogoAdquiridoDto()
                     {
+                        Id = usuariosQueAdquiriram.Id,
+                        DataCriacao = usuariosQueAdquiriram.DataCriacao,
+                        UsuarioId = usuariosQueAdquiriram.UsuarioId,
+                        JogoId = usuariosQueAdquiriram.JogoId,
                         Jogo = new JogoDto()
                         {
                             DataCriacao = usuariosQueAdquiriram.Jogo.DataCriacao,
