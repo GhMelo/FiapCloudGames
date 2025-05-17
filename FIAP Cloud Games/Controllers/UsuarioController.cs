@@ -2,6 +2,7 @@
 using Core.Entity;
 using Core.Input.UsuarioInput;
 using Core.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP_Cloud_Games.Controllers
@@ -16,6 +17,7 @@ namespace FIAP_Cloud_Games.Controllers
         
 
         [HttpGet]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Get()
         {
             try
@@ -70,8 +72,9 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
 
-        [HttpGet("{id:int}")]
-        public IActionResult Get([FromRoute]int id)
+        [HttpGet("/UsuarioPorId/{id:int}")]
+        [Authorize(Policy = "Administrador")]
+        public IActionResult GetUsuarioPorId([FromRoute]int id)
         {
             try
             {
@@ -121,7 +124,61 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
 
+        [HttpGet("/UsuarioPorNome/{nome}")]
+        [Authorize(Policy = "Administrador")]
+        public IActionResult GetUsuarioPorNome([FromRoute] string nome)
+        {
+            try
+            {
+                var usuario = _usuarioRepository.obterPorNome(nome);
+                var usuarioDto = new UsuarioDto();
+
+                usuarioDto.Id = usuario.Id;
+                usuarioDto.DataCriacao = usuario.DataCriacao;
+                usuarioDto.Tipo = usuario.Tipo;
+                usuarioDto.Nome = usuario.Nome;
+                usuarioDto.Email = usuario.Email;
+                usuarioDto.JogosCadastrados = usuario.JogosCadastrados.Select(j => new JogoDto
+                {
+                    Id = j.Id,
+                    DataCriacao = j.DataCriacao,
+                    Titulo = j.Titulo,
+                    Produtora = j.Produtora
+                }).ToList();
+
+                usuarioDto.JogosAdquiridos = usuario.JogosAdquiridos.Select(uj => new UsuarioJogoAdquiridoDto()
+                {
+                    Id = uj.Id,
+                    DataCriacao = uj.DataCriacao,
+                    UsuarioId = uj.UsuarioId,
+                    JogoId = uj.JogoId,
+                    Jogo = new JogoDto()
+                    {
+                        DataCriacao = uj.Jogo.DataCriacao,
+                        Id = uj.Jogo.Id,
+                        Produtora = uj.Jogo.Produtora,
+                        Titulo = uj.Jogo.Titulo,
+                        UsuarioCadastro = new UsuarioDto()
+                        {
+                            DataCriacao = uj.Usuario.DataCriacao,
+                            Id = uj.Usuario.Id,
+                            Nome = uj.Usuario.Nome,
+                            Email = uj.Usuario.Email,
+                            Tipo = uj.Usuario.Tipo,
+                        }
+                    }
+                }).ToList();
+
+                return Ok(usuarioDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Post([FromBody] UsuarioCadastroInput input)
         {
             try
@@ -142,6 +199,7 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
         [HttpPut]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Put([FromBody] UsuarioAlteracaoInput input)
         {
             try
@@ -160,6 +218,7 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
         [HttpDelete("{id:int}")]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Delete([FromRoute] int id)
         {
             try

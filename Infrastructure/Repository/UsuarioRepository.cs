@@ -8,5 +8,8 @@ namespace Infrastructure.Repository
         public UsuarioRepository(ApplicationDbContext context) : base(context)
         {
         }
+
+        public Usuario obterPorNome(string nome)
+            => _dbSet.FirstOrDefault(entity => entity.Nome == nome);
     }
 }

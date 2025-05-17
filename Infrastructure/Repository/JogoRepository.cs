@@ -8,5 +8,7 @@ namespace Infrastructure.Repository
         public JogoRepository(ApplicationDbContext context) : base(context)
         {
         }
+        public Jogo obterPorTitulo(string titulo)
+            => _dbSet.FirstOrDefault(entity => entity.Titulo == titulo);
     }
 }
