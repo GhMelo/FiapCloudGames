@@ -23,39 +23,36 @@ namespace FIAP_Cloud_Games.Controllers
             {
                 var todosJogos = _jogoRepository.ObterTodos();
                 var jogoDto = new List<JogoDto>();
-                foreach (var jogo in todosJogos)
+                jogoDto = todosJogos.Select(tj => new JogoDto()
                 {
-                    jogoDto.Add(new JogoDto()
+                    Id = tj.Id,
+                    Titulo = tj.Titulo,
+                    Produtora = tj.Produtora,
+                    DataCriacao = tj.DataCriacao,
+                    UsuarioCadastro = new UsuarioDto()
                     {
-                        Id = jogo.Id,
-                        Titulo = jogo.Titulo,
-                        Produtora = jogo.Produtora,
-                        DataCriacao = jogo.DataCriacao,
-                        UsuarioCadastro = new UsuarioDto()
+                        Id = tj.UsuarioCadastro.Id,
+                        DataCriacao = tj.UsuarioCadastro.DataCriacao,
+                        Nome = tj.UsuarioCadastro.Nome,
+                        Email = tj.UsuarioCadastro.Email,
+                        Tipo = tj.UsuarioCadastro.Tipo,
+                    },
+                    UsuariosQueAdquiriram = tj.UsuariosQueAdquiriram.Select(u => new UsuarioJogoAdquiridoDto
+                    {
+                        Id = u.Id,
+                        DataCriacao = u.DataCriacao,
+                        UsuarioId = u.UsuarioId,
+                        JogoId = u.JogoId,
+                        Usuario = new UsuarioDto()
                         {
-                            Id = jogo.UsuarioCadastro.Id,
-                            DataCriacao = jogo.UsuarioCadastro.DataCriacao,
-                            Nome = jogo.UsuarioCadastro.Nome,
-                            Email = jogo.UsuarioCadastro.Email,
-                            Tipo = jogo.UsuarioCadastro.Tipo,
-                        },
-                        UsuariosQueAdquiriram = jogo.UsuariosQueAdquiriram.Select(u => new UsuarioJogoAdquiridoDto
-                        {
-                            Id = u.Id,
-                            DataCriacao = u.DataCriacao,
-                            UsuarioId = u.UsuarioId,
-                            JogoId = u.JogoId,
-                            Usuario = new UsuarioDto()
-                            {
-                                Id = u.Usuario.Id,
-                                DataCriacao = u.Usuario.DataCriacao,
-                                Nome = u.Usuario.Nome,
-                                Email = u.Usuario.Email,
-                                Tipo = u.Usuario.Tipo
-                            }
-                        }).ToList(),
-                    });
-                }
+                            Id = u.Usuario.Id,
+                            DataCriacao = u.Usuario.DataCriacao,
+                            Nome = u.Usuario.Nome,
+                            Email = u.Usuario.Email,
+                            Tipo = u.Usuario.Tipo
+                        }
+                    }).ToList(),
+                }).ToList();
 
                 return Ok(jogoDto);
             }
@@ -76,39 +73,38 @@ namespace FIAP_Cloud_Games.Controllers
                 jogoDto.Titulo = jogo.Titulo;
                 jogoDto.Produtora = jogo.Produtora;
                 jogoDto.DataCriacao = jogo.DataCriacao;
-                foreach(var usuariosQueAdquiriram in jogo.UsuariosQueAdquiriram)
+                jogoDto.UsuariosQueAdquiriram = jogo.UsuariosQueAdquiriram.Select(ua => new UsuarioJogoAdquiridoDto()
                 {
-                    jogoDto.UsuariosQueAdquiriram.Add(new UsuarioJogoAdquiridoDto()
+                    Id = ua.Id,
+                    DataCriacao = ua.DataCriacao,
+                    UsuarioId = ua.UsuarioId,
+                    JogoId = ua.JogoId,
+                    Jogo = new JogoDto()
                     {
-                        Id = usuariosQueAdquiriram.Id,
-                        DataCriacao = usuariosQueAdquiriram.DataCriacao,
-                        UsuarioId = usuariosQueAdquiriram.UsuarioId,
-                        JogoId = usuariosQueAdquiriram.JogoId,
-                        Jogo = new JogoDto()
+                        DataCriacao = ua.Jogo.DataCriacao,
+                        Id = ua.Jogo.Id,
+                        Produtora = ua.Jogo.Produtora,
+                        Titulo = ua.Jogo.Titulo,
+                        UsuarioCadastro = new UsuarioDto()
                         {
-                            DataCriacao = usuariosQueAdquiriram.Jogo.DataCriacao,
-                            Id = usuariosQueAdquiriram.Jogo.Id,
-                            Produtora = usuariosQueAdquiriram.Jogo.Produtora,
-                            Titulo = usuariosQueAdquiriram.Jogo.Titulo,
-                            UsuarioCadastro = new UsuarioDto()
-                            {
-                                DataCriacao = usuariosQueAdquiriram.Usuario.DataCriacao,
-                                Id = usuariosQueAdquiriram.Usuario.Id,
-                                Nome = usuariosQueAdquiriram.Usuario.Nome,
-                                Email = usuariosQueAdquiriram.Usuario.Email,
-                                Tipo = usuariosQueAdquiriram.Usuario.Tipo,
-                            }
-                        },
-                        Usuario = new UsuarioDto()
-                        {
-                            Id = usuariosQueAdquiriram.UsuarioId,
-                            DataCriacao = usuariosQueAdquiriram.DataCriacao,
-                            Nome = usuariosQueAdquiriram.Usuario.Nome,
-                            Email = usuariosQueAdquiriram.Usuario.Email,
-                            Tipo = usuariosQueAdquiriram.Usuario.Tipo,
+                            DataCriacao = ua.Usuario.DataCriacao,
+                            Id = ua.Usuario.Id,
+                            Nome = ua.Usuario.Nome,
+                            Email = ua.Usuario.Email,
+                            Tipo = ua.Usuario.Tipo,
                         }
-                    });
-                }
+                    },
+                    Usuario = new UsuarioDto()
+                    {
+                        Id = ua.UsuarioId,
+                        DataCriacao = ua.DataCriacao,
+                        Nome = ua.Usuario.Nome,
+                        Email = ua.Usuario.Email,
+                        Tipo = ua.Usuario.Tipo,
+                    }
+
+                }).ToList();
+
                 jogoDto.UsuarioCadastro = new UsuarioDto()
                 {
                     Id = jogo.UsuarioCadastro.Id,
