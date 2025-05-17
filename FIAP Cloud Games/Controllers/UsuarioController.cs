@@ -130,7 +130,8 @@ namespace FIAP_Cloud_Games.Controllers
                 {
                     Nome = input.Nome,
                     Email = input.Email,
-                    Tipo = input.Tipo
+                    Tipo = input.Tipo,
+                    Senha = input.Senha
                 };
                 _usuarioRepository.Cadastrar(Usuario);
                 return Ok();
@@ -149,6 +150,7 @@ namespace FIAP_Cloud_Games.Controllers
                 usuario.Nome = input.Nome;
                 usuario.Tipo = input.Tipo;
                 usuario.Email = input.Email;
+                usuario.Senha = input.Senha;
                 _usuarioRepository.Alterar(usuario);
                 return Ok();
             }
