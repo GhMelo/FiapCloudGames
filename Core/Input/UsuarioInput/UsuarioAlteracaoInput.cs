@@ -2,7 +2,7 @@
 
 namespace Core.Input.UsuarioInput
 {
-    internal class UsuarioAlteracaoInput
+    public class UsuarioAlteracaoInput
     {
         public required int Id { get; set; }
         public required string Nome { get; set; }

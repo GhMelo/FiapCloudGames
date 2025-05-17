@@ -18,6 +18,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseSqlServer(configuration.GetConnectionString("ConnectionString"));
+    options.UseLazyLoadingProxies();
 }, ServiceLifetime.Scoped);
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();

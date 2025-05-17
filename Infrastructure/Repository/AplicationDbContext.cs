@@ -1,6 +1,7 @@
 ﻿using Core.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Repository
 {
@@ -32,6 +33,7 @@ namespace Infrastructure.Repository
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(_connectionString);
+                optionsBuilder.UseLazyLoadingProxies();
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
