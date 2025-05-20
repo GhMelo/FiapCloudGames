@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Claims;
 using Core.DTOs;
 using Core.Entity;
 using Core.Input.JogoInput;
@@ -13,9 +14,14 @@ namespace FIAP_Cloud_Games.Controllers
     public class JogoController : ControllerBase
     {
         private readonly IJogoRepository _jogoRepository;
+        private readonly IUsuarioRepository _usuarioRepository;
 
-        public JogoController(IJogoRepository jogoRepository) 
-            => _jogoRepository = jogoRepository;
+        public JogoController(IJogoRepository jogoRepository, IUsuarioRepository usuarioRepository)
+        {
+            _jogoRepository = jogoRepository;
+            _usuarioRepository = usuarioRepository;
+        }
+            
 
         [HttpGet]
         public IActionResult Get()
@@ -190,11 +196,13 @@ namespace FIAP_Cloud_Games.Controllers
         {
             try
             {
+                var nomeUsuarioLogado = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                var usuarioId = _usuarioRepository.obterPorNome(nomeUsuarioLogado).Id;
                 var jogo = new Jogo()
                 {
                     Titulo = input.Titulo,
                     Produtora = input.Produtora,
-                    UsuarioCadastroId = input.UsuarioCadastroId
+                    UsuarioCadastroId = usuarioId
                 };
                 _jogoRepository.Cadastrar(jogo);
                 return Ok();

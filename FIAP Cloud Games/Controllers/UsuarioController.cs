@@ -177,9 +177,8 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
 
-        [HttpPost]
-        [Authorize(Policy = "Administrador")]
-        public IActionResult Post([FromBody] UsuarioCadastroInput input)
+        [HttpPost("/UsuarioPadrao")]
+        public IActionResult PostUsuarioPadrao([FromBody] UsuarioCadastroInput input)
         {
             try
             {
@@ -187,13 +186,34 @@ namespace FIAP_Cloud_Games.Controllers
                 {
                     Nome = input.Nome,
                     Email = input.Email,
-                    Tipo = input.Tipo,
+                    Tipo = TipoUsuario.Padrao,
                     Senha = input.Senha
                 };
                 _usuarioRepository.Cadastrar(Usuario);
                 return Ok();
             }
             catch (Exception ex) 
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPost("/UsuarioAdministrador")]
+        [Authorize(Policy = "Administrador")]
+        public IActionResult PostUsuarioAdministrador([FromBody] UsuarioCadastroInput input)
+        {
+            try
+            {
+                var Usuario = new Usuario()
+                {
+                    Nome = input.Nome,
+                    Email = input.Email,
+                    Tipo = TipoUsuario.Administrador,
+                    Senha = input.Senha
+                };
+                _usuarioRepository.Cadastrar(Usuario);
+                return Ok();
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

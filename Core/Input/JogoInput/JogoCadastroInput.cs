@@ -4,6 +4,5 @@
     {
         public string Titulo { get; set; } = null!;
         public string Produtora { get; set; } = null!;
-        public int UsuarioCadastroId { get; set; }
     }
 }

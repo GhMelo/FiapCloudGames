@@ -17,8 +17,5 @@ namespace Core.Input.UsuarioInput
         [SenhaAttribute(TamanhoMinimo = 8)]
         public required string Senha { get; set; }
 
-        [Required(ErrorMessage = "Tipo é obrigatório.")]
-        public required TipoUsuario Tipo { get; set; }
-
     }
 }
