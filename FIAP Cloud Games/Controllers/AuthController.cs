@@ -1,6 +1,6 @@
-﻿using Core.Entity;
-using Core.Input.AuthInput;
-using Core.Repository;
+﻿using Domain.Entity;
+using Domain.Input.AuthInput;
+using Domain.IRepository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;

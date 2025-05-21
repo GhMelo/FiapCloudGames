@@ -1,7 +1,7 @@
-﻿using Core.DTOs;
-using Core.Entity;
-using Core.Input.UsuarioInput;
-using Core.Repository;
+﻿using Application.DTOs;
+using Domain.Entity;
+using Domain.Input.UsuarioInput;
+using Domain.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

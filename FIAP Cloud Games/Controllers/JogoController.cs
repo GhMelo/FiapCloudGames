@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using Core.DTOs;
-using Core.Entity;
-using Core.Input.JogoInput;
-using Core.Repository;
+﻿using System.Security.Claims;
+using Application.DTOs;
+using Domain.Entity;
+using Domain.Input.JogoInput;
+using Domain.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

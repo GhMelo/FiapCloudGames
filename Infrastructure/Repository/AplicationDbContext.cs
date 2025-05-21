@@ -1,7 +1,5 @@
-﻿using Core.Entity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 
 namespace Infrastructure.Repository
 {

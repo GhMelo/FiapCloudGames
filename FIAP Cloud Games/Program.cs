@@ -1,12 +1,11 @@
-using Core.Repository;
-using Infrastructure.Repository;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Domain.Entity;
+using Domain.IRepository;
 using FIAP_Cloud_Games.Middlewares;
-using Core.Entity;
-using Core.Entity.Interfaces;
+using Infrastructure.Repository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 

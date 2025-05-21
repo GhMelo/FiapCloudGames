@@ -1,8 +1,9 @@
-﻿using Core.Entity.Interfaces;
+﻿using Domain.IRepository;
+using Domain.Entity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace Core.Entity
+namespace Infrastructure.Repository
 {
     public class MongoRepository<T> : IMongoRepository<T>
     {

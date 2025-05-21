@@ -1,9 +1,7 @@
 ﻿using System.Data;
-using System.Data.Common;
-using Core.DTOs;
-using Core.Entity;
-using Core.Repository;
 using Dapper;
+using Domain.Entity;
+using Domain.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
@@ -15,11 +13,11 @@ namespace Infrastructure.Repository
         {
             _dbConnectionDapper = context.Database.GetDbConnection();
         }
-        public IEnumerable<UsuarioJogoAdquiridoDto> ObterUsuarioJogosAdquiridosUltimos60DiasDapper()
+        public IEnumerable<UsuarioJogoAdquirido> ObterUsuarioJogosAdquiridosUltimos60DiasDapper()
         {
             var data60Dias = DateTime.Now.Subtract(TimeSpan.FromDays(60));
             var query = "SELECT * FROM UsuarioJogoAdquirido WHERE DataCriacao > @data60Dias";
-            return _dbConnectionDapper.Query<UsuarioJogoAdquiridoDto>(query, new { data60Dias }).ToList();
+            return _dbConnectionDapper.Query<UsuarioJogoAdquirido>(query, new { data60Dias }).ToList();
         }
     }
 }

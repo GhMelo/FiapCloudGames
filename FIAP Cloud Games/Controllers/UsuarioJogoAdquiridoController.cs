@@ -1,10 +1,6 @@
-﻿using Core.DTOs;
-using Core.Entity;
-using Core.Input.UsuarioInput;
-using Core.Input.UsuarioJogoInput;
-using Core.Repository;
-using Infrastructure.Repository;
-using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Entity;
+using Domain.Input.UsuarioJogoInput;
+using Domain.IRepository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP_Cloud_Games.Controllers
