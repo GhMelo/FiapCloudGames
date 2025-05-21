@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using FIAP_Cloud_Games.Middlewares;
+using Core.Entity;
+using Core.Entity.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,7 +76,8 @@ builder.Services.AddSwaggerGen(c=>
 }
 );
 
-
+builder.Services.Configure<MongoSettings>(
+    builder.Configuration.GetSection("MongoSettings"));
 
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -86,6 +89,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IJogoRepository, JogoRepository>();
 builder.Services.AddScoped<IUsuarioJogoAdquiridoRepository, UsuarioJogoAdquiridoRepository>();
+builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
 var app = builder.Build();
 

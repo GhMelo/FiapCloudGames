@@ -1,8 +1,7 @@
-﻿using Core.Entity;
-using System.Diagnostics;
-using System;
-using Infrastructure.Repository;
+﻿using System.Diagnostics;
 using System.Text.Json;
+using FIAP_Cloud_Games.Models;
+using Core.Entity.Interfaces;
 
 namespace FIAP_Cloud_Games.Middlewares
 {
@@ -15,7 +14,7 @@ namespace FIAP_Cloud_Games.Middlewares
             _next = next;
         }
 
-        public async Task Invoke(HttpContext context, ApplicationDbContext dbContext)
+        public async Task Invoke(HttpContext context, IMongoRepository<LogRequest> logRepository)
         {
             var sw = Stopwatch.StartNew();
             var correlationId = context.Items["CorrelationId"]?.ToString() ?? Guid.NewGuid().ToString();
@@ -34,7 +33,7 @@ namespace FIAP_Cloud_Games.Middlewares
 
                 if (statusCode >= 400)
                 {
-                    if(statusCode == 401)
+                    if (statusCode == 401)
                     {
                         errorMessage = "Não autorizado";
                     }
@@ -100,12 +99,11 @@ namespace FIAP_Cloud_Games.Middlewares
 
             try
             {
-                dbContext.Add(log);
-                await dbContext.SaveChangesAsync();
+                await logRepository.InsertOneAsync(log);
             }
             catch
             {
-                
+                // Ignorar errors de loggin em si
             }
 
             responseBody.Seek(0, SeekOrigin.Begin);
