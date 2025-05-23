@@ -1,8 +1,7 @@
-﻿namespace Domain.Input.JogoInput
+﻿namespace Application.Input.JogoInput
 {
-    public class JogoAlteracaoInput
+    public class JogoCadastroInput
     {
-        public int Id { get; set; }
         public string Titulo { get; set; } = null!;
         public string Produtora { get; set; } = null!;
     }

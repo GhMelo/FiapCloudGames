@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Domain.Input.UsuarioJogoInput
+namespace Application.Input.UsuarioJogoInput
 {
     public class UsuarioJogoAdquiridoCadastroInput
     {

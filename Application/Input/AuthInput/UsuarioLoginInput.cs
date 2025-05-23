@@ -1,4 +1,4 @@
-﻿namespace Domain.Input.AuthInput
+﻿namespace Application.Input.AuthInput
 {
     public class UsuarioLoginInput
     {

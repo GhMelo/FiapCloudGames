@@ -1,8 +1,6 @@
 ﻿using System.Security.Claims;
-using Application.DTOs;
-using Domain.Entity;
-using Domain.Input.JogoInput;
-using Domain.IRepository;
+using Application.Input.JogoInput;
+using Application.Interfaces.IService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,13 +10,11 @@ namespace FIAP_Cloud_Games.Controllers
     [Route("/[controller]")]
     public class JogoController : ControllerBase
     {
-        private readonly IJogoRepository _jogoRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IJogoService _jogoService;
 
-        public JogoController(IJogoRepository jogoRepository, IUsuarioRepository usuarioRepository)
+        public JogoController(IJogoService jogoService)
         {
-            _jogoRepository = jogoRepository;
-            _usuarioRepository = usuarioRepository;
+            _jogoService = jogoService;
         }
             
 
@@ -27,40 +23,8 @@ namespace FIAP_Cloud_Games.Controllers
         {
             try
             {
-                var todosJogos = _jogoRepository.ObterTodos();
-                var jogoDto = new List<JogoDto>();
-                jogoDto = todosJogos.Select(tj => new JogoDto()
-                {
-                    Id = tj.Id,
-                    Titulo = tj.Titulo,
-                    Produtora = tj.Produtora,
-                    DataCriacao = tj.DataCriacao,
-                    UsuarioCadastro = new UsuarioDto()
-                    {
-                        Id = tj.UsuarioCadastro.Id,
-                        DataCriacao = tj.UsuarioCadastro.DataCriacao,
-                        Nome = tj.UsuarioCadastro.Nome,
-                        Email = tj.UsuarioCadastro.Email,
-                        Tipo = tj.UsuarioCadastro.Tipo,
-                    },
-                    UsuariosQueAdquiriram = tj.UsuariosQueAdquiriram.Select(u => new UsuarioJogoAdquiridoDto
-                    {
-                        Id = u.Id,
-                        DataCriacao = u.DataCriacao,
-                        UsuarioId = u.UsuarioId,
-                        JogoId = u.JogoId,
-                        Usuario = new UsuarioDto()
-                        {
-                            Id = u.Usuario.Id,
-                            DataCriacao = u.Usuario.DataCriacao,
-                            Nome = u.Usuario.Nome,
-                            Email = u.Usuario.Email,
-                            Tipo = u.Usuario.Tipo
-                        }
-                    }).ToList(),
-                }).ToList();
-
-                return Ok(jogoDto);
+                var todosJogosDto = _jogoService.ObterTodosJogosDto();
+                return Ok(todosJogosDto);
             }
             catch (Exception ex)
             {
@@ -74,53 +38,7 @@ namespace FIAP_Cloud_Games.Controllers
         {
             try
             {
-                var jogo = _jogoRepository.ObterPorId(id);
-                var jogoDto = new JogoDto();
-                jogoDto.Id = jogo.Id;
-                jogoDto.Titulo = jogo.Titulo;
-                jogoDto.Produtora = jogo.Produtora;
-                jogoDto.DataCriacao = jogo.DataCriacao;
-                jogoDto.UsuariosQueAdquiriram = jogo.UsuariosQueAdquiriram.Select(ua => new UsuarioJogoAdquiridoDto()
-                {
-                    Id = ua.Id,
-                    DataCriacao = ua.DataCriacao,
-                    UsuarioId = ua.UsuarioId,
-                    JogoId = ua.JogoId,
-                    Jogo = new JogoDto()
-                    {
-                        DataCriacao = ua.Jogo.DataCriacao,
-                        Id = ua.Jogo.Id,
-                        Produtora = ua.Jogo.Produtora,
-                        Titulo = ua.Jogo.Titulo,
-                        UsuarioCadastro = new UsuarioDto()
-                        {
-                            DataCriacao = ua.Usuario.DataCriacao,
-                            Id = ua.Usuario.Id,
-                            Nome = ua.Usuario.Nome,
-                            Email = ua.Usuario.Email,
-                            Tipo = ua.Usuario.Tipo,
-                        }
-                    },
-                    Usuario = new UsuarioDto()
-                    {
-                        Id = ua.UsuarioId,
-                        DataCriacao = ua.DataCriacao,
-                        Nome = ua.Usuario.Nome,
-                        Email = ua.Usuario.Email,
-                        Tipo = ua.Usuario.Tipo,
-                    }
-
-                }).ToList();
-
-                jogoDto.UsuarioCadastro = new UsuarioDto()
-                {
-                    Id = jogo.UsuarioCadastro.Id,
-                    DataCriacao = jogo.UsuarioCadastro.DataCriacao,
-                    Nome = jogo.UsuarioCadastro.Nome,
-                    Email = jogo.UsuarioCadastro.Email,
-                    Tipo = jogo.UsuarioCadastro.Tipo,
-                };
-
+                var jogoDto = _jogoService.ObterJogoDtoPorId(id);
                 return Ok(jogoDto);
             }
             catch (Exception ex)
@@ -134,53 +52,7 @@ namespace FIAP_Cloud_Games.Controllers
         {
             try
             {
-                var jogo = _jogoRepository.obterPorTitulo(titulo);
-                var jogoDto = new JogoDto();
-                jogoDto.Id = jogo.Id;
-                jogoDto.Titulo = jogo.Titulo;
-                jogoDto.Produtora = jogo.Produtora;
-                jogoDto.DataCriacao = jogo.DataCriacao;
-                jogoDto.UsuariosQueAdquiriram = jogo.UsuariosQueAdquiriram.Select(ua => new UsuarioJogoAdquiridoDto()
-                {
-                    Id = ua.Id,
-                    DataCriacao = ua.DataCriacao,
-                    UsuarioId = ua.UsuarioId,
-                    JogoId = ua.JogoId,
-                    Jogo = new JogoDto()
-                    {
-                        DataCriacao = ua.Jogo.DataCriacao,
-                        Id = ua.Jogo.Id,
-                        Produtora = ua.Jogo.Produtora,
-                        Titulo = ua.Jogo.Titulo,
-                        UsuarioCadastro = new UsuarioDto()
-                        {
-                            DataCriacao = ua.Usuario.DataCriacao,
-                            Id = ua.Usuario.Id,
-                            Nome = ua.Usuario.Nome,
-                            Email = ua.Usuario.Email,
-                            Tipo = ua.Usuario.Tipo,
-                        }
-                    },
-                    Usuario = new UsuarioDto()
-                    {
-                        Id = ua.UsuarioId,
-                        DataCriacao = ua.DataCriacao,
-                        Nome = ua.Usuario.Nome,
-                        Email = ua.Usuario.Email,
-                        Tipo = ua.Usuario.Tipo,
-                    }
-
-                }).ToList();
-
-                jogoDto.UsuarioCadastro = new UsuarioDto()
-                {
-                    Id = jogo.UsuarioCadastro.Id,
-                    DataCriacao = jogo.UsuarioCadastro.DataCriacao,
-                    Nome = jogo.UsuarioCadastro.Nome,
-                    Email = jogo.UsuarioCadastro.Email,
-                    Tipo = jogo.UsuarioCadastro.Tipo,
-                };
-
+                var jogoDto = _jogoService.ObterJogoDtoPorTitulo(titulo);
                 return Ok(jogoDto);
             }
             catch (Exception ex)
@@ -196,14 +68,7 @@ namespace FIAP_Cloud_Games.Controllers
             try
             {
                 var nomeUsuarioLogado = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                var usuarioId = _usuarioRepository.obterPorNome(nomeUsuarioLogado).Id;
-                var jogo = new Jogo()
-                {
-                    Titulo = input.Titulo,
-                    Produtora = input.Produtora,
-                    UsuarioCadastroId = usuarioId
-                };
-                _jogoRepository.Cadastrar(jogo);
+                _jogoService.CadastrarJogo(input, nomeUsuarioLogado);
                 return Ok();
             }
             catch (Exception ex)
@@ -217,10 +82,7 @@ namespace FIAP_Cloud_Games.Controllers
         {
             try
             {
-                var jogo = _jogoRepository.ObterPorId(input.Id);
-                jogo.Titulo = input.Titulo;
-                jogo.Produtora = input.Produtora;
-                _jogoRepository.Alterar(jogo);
+                _jogoService.AlterarJogo(input);
                 return Ok();
             }
             catch (Exception ex)
@@ -234,7 +96,7 @@ namespace FIAP_Cloud_Games.Controllers
         {
             try
             {
-                _jogoRepository.Deletar(id);
+                _jogoService.DeletarJogo(id);
                 return Ok();
             }
             catch (Exception ex)

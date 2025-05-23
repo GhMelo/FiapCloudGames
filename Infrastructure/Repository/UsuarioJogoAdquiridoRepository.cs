@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Dapper;
 using Domain.Entity;
-using Domain.IRepository;
+using Domain.Interfaces.IRepository;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository

@@ -1,6 +1,8 @@
 using System.Text;
+using Application.Interfaces.IService;
+using Application.Services;
 using Domain.Entity;
-using Domain.IRepository;
+using Domain.Interfaces.IRepository;
 using FIAP_Cloud_Games.Middlewares;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -88,6 +90,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IJogoRepository, JogoRepository>();
 builder.Services.AddScoped<IUsuarioJogoAdquiridoRepository, UsuarioJogoAdquiridoRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IJogoService, JogoService>();
 builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
 var app = builder.Build();

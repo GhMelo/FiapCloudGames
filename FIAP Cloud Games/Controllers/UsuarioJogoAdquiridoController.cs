@@ -1,6 +1,6 @@
 ﻿using Domain.Entity;
-using Domain.Input.UsuarioJogoInput;
-using Domain.IRepository;
+using Application.Input.UsuarioJogoInput;
+using Domain.Interfaces.IRepository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP_Cloud_Games.Controllers

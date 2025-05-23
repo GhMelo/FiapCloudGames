@@ -2,8 +2,8 @@
 {
     public enum TipoUsuario
     {
-        Padrao,
-        Administrador
+        Padrao = 0,
+        Administrador = 1
     }
 
     public class Usuario : EntityBase

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
-namespace Domain.Validations.DataAnnotations
+namespace Application.Validations.DataAnnotations
 {
     public class SenhaAttribute : ValidationAttribute
     {

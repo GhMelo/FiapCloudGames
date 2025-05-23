@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Domain.Validations.DataAnnotations;
+using Application.Validations.DataAnnotations;
 
-namespace Domain.Input.UsuarioInput
+namespace Application.Input.UsuarioInput
 {
     public class UsuarioCadastroInput
     {

@@ -1,4 +1,4 @@
-﻿namespace Domain.IRepository
+﻿namespace Domain.Interfaces.IRepository
 {
     public interface IMongoRepository<T>
     {

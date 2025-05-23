@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text.Json;
 using Domain.Entity;
-using Domain.IRepository;
+using Domain.Interfaces.IRepository;
 
 namespace FIAP_Cloud_Games.Middlewares
 {

@@ -1,7 +1,7 @@
-﻿using Domain.IRepository;
-using Domain.Entity;
+﻿using Domain.Entity;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Domain.Interfaces.IRepository;
 
 namespace Infrastructure.Repository
 {
