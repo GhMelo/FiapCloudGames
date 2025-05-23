@@ -93,6 +93,7 @@ builder.Services.AddScoped<IUsuarioJogoAdquiridoRepository, UsuarioJogoAdquirido
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IJogoService, JogoService>();
 builder.Services.AddScoped<IUsuarioJogoAdquiridoService, UsuarioJogoAdquiridoService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
 
 var app = builder.Build();
