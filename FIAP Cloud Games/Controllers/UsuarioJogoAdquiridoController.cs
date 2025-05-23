@@ -1,6 +1,5 @@
-﻿using Domain.Entity;
-using Application.Input.UsuarioJogoInput;
-using Domain.Interfaces.IRepository;
+﻿using Application.Input.UsuarioJogoInput;
+using Application.Interfaces.IService;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP_Cloud_Games.Controllers
@@ -9,16 +8,10 @@ namespace FIAP_Cloud_Games.Controllers
     [Route("/[controller]")]
     public class UsuarioJogoAdquiridoController : ControllerBase
     {
-        private readonly IUsuarioJogoAdquiridoRepository _usuarioJogoAdquiridoRepository;
-        private readonly IJogoRepository _jogoRepository;
-        private readonly IUsuarioRepository _usuarioRepository;
-        public UsuarioJogoAdquiridoController(IUsuarioJogoAdquiridoRepository usuarioJogoAdquiridoRepository,
-            IJogoRepository jogoRepository,
-            IUsuarioRepository usuarioRepository)
+        private readonly IUsuarioJogoAdquiridoService _usuarioJogoAdquiridoService;
+        public UsuarioJogoAdquiridoController(IUsuarioJogoAdquiridoService usuarioJogoAdquiridoService)
         {
-            _usuarioJogoAdquiridoRepository = usuarioJogoAdquiridoRepository;
-            _jogoRepository = jogoRepository;
-            _usuarioRepository = usuarioRepository;
+            _usuarioJogoAdquiridoService = usuarioJogoAdquiridoService;
         }
 
 
@@ -27,7 +20,8 @@ namespace FIAP_Cloud_Games.Controllers
         {
             try
             {
-                return Ok(_usuarioJogoAdquiridoRepository.ObterUsuarioJogosAdquiridosUltimos60DiasDapper());
+                var usuarioJogosAdquiridosUltimos60Dias = _usuarioJogoAdquiridoService.ObterUsuarioJogosAdquiridosUltimos60Dias();
+                return Ok(usuarioJogosAdquiridosUltimos60Dias);
             }
             catch (Exception ex)
             {
@@ -40,12 +34,7 @@ namespace FIAP_Cloud_Games.Controllers
         {
             try
             {
-                var usuarioJogoAdquirido = new UsuarioJogoAdquirido()
-                {
-                    UsuarioId = _jogoRepository.obterPorTitulo(input.TituloJogo).Id,
-                    JogoId = _usuarioRepository.obterPorNome(input.NomeUsuario).Id
-                };
-                _usuarioJogoAdquiridoRepository.Cadastrar(usuarioJogoAdquirido);
+                _usuarioJogoAdquiridoService.CadastrarJogoAdquirido(input);
                 return Ok();
             }
             catch (Exception ex)
