@@ -27,8 +27,4 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Application\Inputs\JogoInputs\" />
-  </ItemGroup>
-
 </Project>
