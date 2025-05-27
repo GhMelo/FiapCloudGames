@@ -17,27 +17,65 @@ namespace Infrastructure.Repository
 
         public void Alterar(T entidade)
         {
-            _dbSet.Update(entidade);
-            _context.SaveChanges();
+            try
+            {
+                _dbSet.Update(entidade);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
         }
 
         public void Cadastrar(T entidade)
         {
-            entidade.DataCriacao = DateTime.Now;
-            _dbSet.Add(entidade);
-            _context.SaveChanges();
+            try
+            {
+                _dbSet.Add(entidade);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
         }
 
         public void Deletar(int id)
         {
-            _dbSet.Remove(ObterPorId(id));
-            _context.SaveChanges();
+            try
+            {
+                _dbSet.Remove(ObterPorId(id));
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
         }
 
         public T ObterPorId(int id)
-            => _dbSet.FirstOrDefault(entity => entity.Id == id);
+        {
+            try
+            {
+                return _dbSet.FirstOrDefault(entity => entity.Id == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
 
         public IList<T> ObterTodos()
-            => _dbSet.ToList();
+        {
+            try
+            {
+                return _dbSet.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+        }
     }
 }

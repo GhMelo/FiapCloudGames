@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Repository
@@ -6,7 +7,6 @@ namespace Infrastructure.Repository
     public class ApplicationDbContext : DbContext
     {
         private readonly string _connectionString;
-
         public ApplicationDbContext()
         {
             IConfiguration configuration = new ConfigurationBuilder()
@@ -20,6 +20,10 @@ namespace Infrastructure.Repository
         {
             _connectionString = connectionString;
 
+        }
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        : base(options)
+        {
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
