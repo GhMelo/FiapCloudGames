@@ -23,7 +23,6 @@ namespace FIAP_Cloud_Games.Tests.Application.Services
             _usuarioRepositoryMock = new Mock<IUsuarioRepository>();
             _jogoService = new JogoService(_jogoRepositoryMock.Object, _usuarioRepositoryMock.Object);
         }
-
         [Test]
         public void ObterJogoDtoPorId_DeveRetornarJogoDtoComDadosCorretos()
         {
@@ -219,7 +218,7 @@ namespace FIAP_Cloud_Games.Tests.Application.Services
             _jogoRepositoryMock.Verify(r => r.Deletar(id), Times.Once);
         }
         [Test]
-        public void DeletarJogo_JogoNaoExiste_DeveLancarExcecao()
+        public void DeletarJogo_DeveLancarExcecao_QuandoJogoNaoExiste()
         {
             // Arrange
             var id = _faker.Random.Int(1, 1000);

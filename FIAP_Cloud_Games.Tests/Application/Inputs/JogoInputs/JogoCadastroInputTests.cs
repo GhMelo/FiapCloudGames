@@ -7,7 +7,12 @@ namespace FIAP_Cloud_Games.Tests.Application.Inputs.JogoInputs
 {
     internal class JogoCadastroInputTests
     {
-        private readonly Faker _faker = new();
+        private Faker _faker = new();
+        [SetUp]
+        public void Setup()
+        {
+            _faker = new Faker();
+        }
         private List<ValidationResult> ValidateModel(object model)
         {
             var results = new List<ValidationResult>();

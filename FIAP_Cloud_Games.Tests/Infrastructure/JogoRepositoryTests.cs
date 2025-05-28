@@ -126,7 +126,7 @@ public class JogoRepositoryTests
         Assert.That(lista.Count, Is.EqualTo(2));
     }
     [Test]
-    public void ObterPorTitulo_DeveRetornarJogo_QuandoUsuarioExiste()
+    public void ObterPorTitulo_DeveRetornarJogo_QuandoJogoExiste()
     {
         var jogoFake = GerarJogoFaker(GerarUsuarioFaker());
         _jogoRepository.Cadastrar(jogoFake);
@@ -137,7 +137,7 @@ public class JogoRepositoryTests
         Assert.That(resultado!.Titulo, Is.EqualTo(jogoFake.Titulo));
     }
     [Test]
-    public void ObterPorNome_DeveRetornarNull_QuandoNomeNaoExiste()
+    public void ObterPorTitulo_DeveRetornarNull_QuandoTituloNaoExiste()
     {
         var resultado = _jogoRepository.obterPorTitulo("Inexistente");
         Assert.That(resultado, Is.Null);

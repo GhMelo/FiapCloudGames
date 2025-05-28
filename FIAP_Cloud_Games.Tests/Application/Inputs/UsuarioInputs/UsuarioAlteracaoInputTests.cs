@@ -4,6 +4,7 @@ using Bogus;
 using Bogus.DataSets;
 using Domain.Entity;
 using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
+using ValidationResult = System.ComponentModel.DataAnnotations.ValidationResult;
 
 namespace FIAP_Cloud_Games.Tests.Application.Inputs.UsuarioInputs
 {
@@ -12,11 +13,18 @@ namespace FIAP_Cloud_Games.Tests.Application.Inputs.UsuarioInputs
     {
         private Faker _faker;
 
-        
+
         [SetUp]
         public void Setup()
         {
-            _faker = new Faker("pt_BR");
+            _faker = new Faker();
+        }
+        private List<ValidationResult> ValidateModel(object model)
+        {
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(model);
+            Validator.TryValidateObject(model, context, results, true);
+            return results;
         }
         private string GerarSenhaSegura(Internet internet)
         {
@@ -62,12 +70,11 @@ namespace FIAP_Cloud_Games.Tests.Application.Inputs.UsuarioInputs
                 Tipo = TipoUsuario.Padrao
             };
 
-            var context = new ValidationContext(input);
-
-            Assert.Throws<ValidationException>(() => Validator.ValidateObject(input, context, true));
+            var results = ValidateModel(input);
+            Assert.That(results, Has.Exactly(1).Matches<ValidationResult>(r => r.ErrorMessage == "Email inválido."));
         }
         [Test]
-        public void UsuarioAlteracaoInput_SenhaCurta_DeveLancarValidationException()
+        public void UsuarioAlteracaoInput_SenhaInvalida_DeveLancarValidationException()
         {
             var input = new UsuarioAlteracaoInput
             {
@@ -78,9 +85,68 @@ namespace FIAP_Cloud_Games.Tests.Application.Inputs.UsuarioInputs
                 Tipo = TipoUsuario.Padrao
             };
 
-            var context = new ValidationContext(input);
+            var results = ValidateModel(input);
+            Assert.That(results, Has.Exactly(1).Matches<ValidationResult>(r => r.ErrorMessage == "A senha deve ter pelo menos 8 caracteres."));
+        }
+        [Test]
+        public void UsuarioAlteracaoInput_TipoVazio_DeveLancarValidationException()
+        {
+            var input = new UsuarioAlteracaoInput
+            {
+                Id = 1,
+                Nome = _faker.Name.FullName(),
+                Email = _faker.Internet.Email(),
+                Senha = GerarSenhaSegura(_faker.Internet),
+                Tipo = default
+            };
 
-            Assert.Throws<ValidationException>(() => Validator.ValidateObject(input, context, true));
+            var results = ValidateModel(input);
+            Assert.That(results, Has.Exactly(1).Matches<ValidationResult>(r => r.ErrorMessage == "Tipo é obrigatório."));
+        }
+        [Test]
+        public void UsuarioAlteracaoInput_NomeNulo_DeveLancarValidationException()
+        {
+            var input = new UsuarioAlteracaoInput
+            {
+                Id = 1,
+                Nome = null!,
+                Email = _faker.Internet.Email(),
+                Senha = GerarSenhaSegura(_faker.Internet),
+                Tipo = TipoUsuario.Administrador
+            };
+
+            var results = ValidateModel(input);
+            Assert.That(results, Has.Exactly(1).Matches<ValidationResult>(r => r.ErrorMessage == "Nome é obrigatório."));
+        }
+        [Test]
+        public void UsuarioAlteracaoInput_EmailNulo_DeveLancarValidationException()
+        {
+            var input = new UsuarioAlteracaoInput
+            {
+                Id = 1,
+                Nome = _faker.Name.FullName(),
+                Email = null!,
+                Senha = GerarSenhaSegura(_faker.Internet),
+                Tipo = TipoUsuario.Administrador
+            };
+
+            var results = ValidateModel(input);
+            Assert.That(results, Has.Exactly(1).Matches<ValidationResult>(r => r.ErrorMessage == "Email é obrigatório."));
+        }
+        [Test]
+        public void UsuarioAlteracaoInput_SenhaNula_DeveLancarValidationException()
+        {
+            var input = new UsuarioAlteracaoInput
+            {
+                Id = 1,
+                Nome = _faker.Name.FullName(),
+                Email = _faker.Internet.Email(),
+                Senha = null!,
+                Tipo = TipoUsuario.Administrador
+            };
+
+            var results = ValidateModel(input);
+            Assert.That(results, Has.Exactly(1).Matches<ValidationResult>(r => r.ErrorMessage == "Senha é obrigatória."));
         }
     }
 }
