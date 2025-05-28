@@ -3,11 +3,10 @@ using Application.Input.PromocaoInput;
 using Application.Interfaces.IService;
 using Domain.Entity;
 using Domain.Interfaces.IRepository;
-using Infrastructure.Repository;
 
 namespace Application.Services
 {
-    internal class PromocaoService : IPromocaoService
+    public class PromocaoService : IPromocaoService
     {
         private readonly IPromocaoRepository _promocaoRepository;
         public PromocaoService(IPromocaoRepository promocaoRepository)
