@@ -51,7 +51,6 @@ namespace FIAP_Cloud_Games.Tests.Application.Inputs.UsuarioInputs
 
             Assert.DoesNotThrow(() => Validator.ValidateObject(input, context, true));
         }
-
         [Test]
         public void UsuarioCadastroInput_EmailInvalido_DeveLancarValidationException()
         {
@@ -66,7 +65,6 @@ namespace FIAP_Cloud_Games.Tests.Application.Inputs.UsuarioInputs
 
             Assert.Throws<ValidationException>(() => Validator.ValidateObject(input, context, true));
         }
-
         [Test]
         public void UsuarioCadastroInput_SenhaCurta_DeveLancarValidationException()
         {

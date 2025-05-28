@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using Domain.Entity;
-using Domain.Interfaces.IRepository;
 using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 
@@ -41,10 +40,11 @@ public class JogoRepositoryTests
     public void Setup()
     {
         var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-            .UseInMemoryDatabase(databaseName: "TestDb_Jogo")
+            .UseInMemoryDatabase(databaseName: "TestDb")
             .Options;
 
         _context = new ApplicationDbContext(options);
+        //Deleta o banco de dados toda vez para um teste não interferir no outro
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
 
@@ -53,7 +53,7 @@ public class JogoRepositoryTests
     }
 
     [Test]
-    public void Cadastrar_DeveAdicionarJogoAoBanco()
+    public void CadastrarJogo_DeveAdicionarJogoAoBanco()
     {
         var usuario = GerarUsuarioFaker();
         _usuarioRepository.Cadastrar(usuario);
@@ -109,7 +109,6 @@ public class JogoRepositoryTests
         var resultado = _jogoRepository.ObterPorId(999999);
         Assert.That(resultado, Is.Null);
     }
-
     [Test]
     public void ObterTodos_DeveRetornarTodosJogos()
     {
@@ -126,7 +125,23 @@ public class JogoRepositoryTests
 
         Assert.That(lista.Count, Is.EqualTo(2));
     }
+    [Test]
+    public void ObterPorTitulo_DeveRetornarJogo_QuandoUsuarioExiste()
+    {
+        var jogoFake = GerarJogoFaker(GerarUsuarioFaker());
+        _jogoRepository.Cadastrar(jogoFake);
 
+        var resultado = _jogoRepository.obterPorTitulo(jogoFake.Titulo);
+
+        Assert.That(resultado, Is.Not.Null);
+        Assert.That(resultado!.Titulo, Is.EqualTo(jogoFake.Titulo));
+    }
+    [Test]
+    public void ObterPorNome_DeveRetornarNull_QuandoNomeNaoExiste()
+    {
+        var resultado = _jogoRepository.obterPorTitulo("Inexistente");
+        Assert.That(resultado, Is.Null);
+    }
     [Test]
     public void Alterar_DeveAtualizarDadosDoJogo()
     {
@@ -144,28 +159,6 @@ public class JogoRepositoryTests
         var atualizado = _jogoRepository.ObterPorId(jogo.Id);
         Assert.That(atualizado!.Titulo, Is.EqualTo(novoTitulo));
     }
-
-    [Test]
-    public void Deletar_DeveRemoverJogoDoBanco()
-    {
-        var usuario = GerarUsuarioFaker();
-        _usuarioRepository.Cadastrar(usuario);
-
-        var jogo = GerarJogoFaker(usuario);
-        _jogoRepository.Cadastrar(jogo);
-
-        _jogoRepository.Deletar(jogo.Id);
-
-        var deletado = _jogoRepository.ObterPorId(jogo.Id);
-        Assert.That(deletado, Is.Null);
-    }
-
-    [Test]
-    public void Deletar_DeveLancarExcecao_SeJogoNaoExiste()
-    {
-        Assert.Throws<Exception>(() => _jogoRepository.Deletar(999999));
-    }
-
     [Test]
     public void Alterar_DeveLancarExcecao_SeJogoNaoExiste()
     {
@@ -182,23 +175,23 @@ public class JogoRepositoryTests
 
         Assert.Throws<Exception>(() => _jogoRepository.Alterar(jogoFake));
     }
-
     [Test]
-    public void ObterPorTitulo_DeveRetornarJogo_QuandoUsuarioExiste()
+    public void Deletar_DeveRemoverJogoDoBanco()
     {
-        var jogoFake = GerarJogoFaker(GerarUsuarioFaker());
-        _jogoRepository.Cadastrar(jogoFake);
+        var usuario = GerarUsuarioFaker();
+        _usuarioRepository.Cadastrar(usuario);
 
-        var resultado = _jogoRepository.obterPorTitulo(jogoFake.Titulo);
+        var jogo = GerarJogoFaker(usuario);
+        _jogoRepository.Cadastrar(jogo);
 
-        Assert.That(resultado, Is.Not.Null);
-        Assert.That(resultado!.Titulo, Is.EqualTo(jogoFake.Titulo));
+        _jogoRepository.Deletar(jogo.Id);
+
+        var deletado = _jogoRepository.ObterPorId(jogo.Id);
+        Assert.That(deletado, Is.Null);
     }
-
     [Test]
-    public void ObterPorNome_DeveRetornarNull_QuandoNomeNaoExiste()
+    public void Deletar_DeveLancarExcecao_SeJogoNaoExiste()
     {
-        var resultado = _jogoRepository.obterPorTitulo("Inexistente");
-        Assert.That(resultado, Is.Null);
+        Assert.Throws<Exception>(() => _jogoRepository.Deletar(999999));
     }
 }

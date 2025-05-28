@@ -31,6 +31,7 @@ public class UsuarioRepositoryTests
             .Options;
 
         _context = new ApplicationDbContext(options);
+        //Deleta o banco de dados toda vez para um teste não interferir no outro
         _context.Database.EnsureDeleted();
         _context.Database.EnsureCreated();
 
@@ -48,57 +49,12 @@ public class UsuarioRepositoryTests
         Assert.That(resultado, Is.Not.Null);
         Assert.That(resultado!.Nome, Is.EqualTo(usuario.Nome));
     }
-
     [Test]
     public void ObterPorNome_DeveRetornarNull_QuandoNomeNaoExiste()
     {
         var resultado = _repository.obterPorNome("Inexistente");
         Assert.That(resultado, Is.Null);
     }
-
-    [Test]
-    public void Cadastrar_DeveAdicionarUsuarioAoBanco()
-    {
-        var usuario = GerarUsuarioFaker();
-
-        _repository.Cadastrar(usuario);
-
-        var usuarioNoBanco = _repository.ObterPorId(usuario.Id);
-
-        Assert.That(usuarioNoBanco, Is.Not.Null);
-        Assert.That(usuarioNoBanco!.Nome, Is.EqualTo(usuario.Nome));
-        Assert.That(usuarioNoBanco.DataCriacao, Is.Not.EqualTo(default(DateTime)));
-    }
-
-    [Test]
-    public void Alterar_DeveAtualizarDadosDoUsuario()
-    {
-        var usuario = GerarUsuarioFaker();
-        _repository.Cadastrar(usuario);
-
-        var novoEmail = _faker.Internet.Email();
-        usuario.Email = novoEmail;
-        _repository.Alterar(usuario);
-
-        var atualizado = _repository.ObterPorId(usuario.Id);
-
-        Assert.That(atualizado, Is.Not.Null);
-        Assert.That(atualizado!.Email, Is.EqualTo(novoEmail));
-    }
-
-    [Test]
-    public void Deletar_DeveRemoverUsuarioDoBanco()
-    {
-        var usuario = GerarUsuarioFaker();
-        _repository.Cadastrar(usuario);
-
-        _repository.Deletar(usuario.Id);
-
-        var removido = _repository.ObterPorId(usuario.Id);
-
-        Assert.That(removido, Is.Null);
-    }
-
     [Test]
     public void ObterPorId_DeveRetornarUsuarioComIdInformado()
     {
@@ -108,9 +64,8 @@ public class UsuarioRepositoryTests
         var resultado = _repository.ObterPorId(usuario.Id);
 
         Assert.That(resultado, Is.Not.Null);
-        Assert.That(resultado!.Nome, Is.EqualTo(usuario.Nome));
+        Assert.That(resultado!.Id, Is.EqualTo(usuario.Id));
     }
-
     [Test]
     public void ObterTodos_DeveRetornarTodosUsuariosDoBanco()
     {
@@ -126,31 +81,29 @@ public class UsuarioRepositoryTests
         Assert.That(resultado.Any(u => u.Id == usuario1.Id), Is.True);
         Assert.That(resultado.Any(u => u.Id == usuario2.Id), Is.True);
     }
-
     [Test]
     public void ObterPorId_DeveRetornarNull_QuandoIdNaoExiste()
     {
         var resultado = _repository.ObterPorId(999999);
         Assert.That(resultado, Is.Null);
     }
-
     [Test]
-    public void Deletar_DeveLancarExcecao_QuandoIdNaoExiste()
+    public void Cadastrar_DeveAdicionarUsuarioAoBanco()
     {
-        Assert.Throws<Exception>(() => _repository.Deletar(999999999));
-    }
+        var usuario = GerarUsuarioFaker();
 
-    [Test]
-    public void Alterar_DeveLancarExcecao_QuandoUsuarioNaoExiste()
-    {
-        var usuarioFake = GerarUsuarioFaker();
-        Assert.Throws<Exception>(() => _repository.Alterar(usuarioFake));
-    }
+        _repository.Cadastrar(usuario);
 
+        var usuarioNoBanco = _repository.ObterPorId(usuario.Id);
+
+        Assert.That(usuarioNoBanco, Is.Not.Null);
+        Assert.That(usuarioNoBanco!.Nome, Is.EqualTo(usuario.Nome));
+        Assert.That(usuarioNoBanco.DataCriacao, Is.Not.EqualTo(default(DateTime)));
+    }
     [Test]
     public void CadastrarUsuario_DeveLancarExcecao_QuandoCamposObrigatoriosNaoForemPreenchidos()
     {
-        var usuarioInvalido = new Usuario(); 
+        var usuarioInvalido = new Usuario();
 
         //Usuario Inteiro vazio
         Assert.Throws<Exception>(() =>
@@ -161,22 +114,51 @@ public class UsuarioRepositoryTests
         //Somente nome preenchido
         Assert.Throws<Exception>(() =>
         {
+            usuarioInvalido.Email = null;
+            usuarioInvalido.Senha = null;
+            usuarioInvalido.Nome = _faker.Name.FullName();
             _repository.Cadastrar(usuarioInvalido);
         });
 
-        //Nome e Email preenchido
+        //Somente Email preenchido
         Assert.Throws<Exception>(() =>
         {
+            usuarioInvalido.Senha = null;
+            usuarioInvalido.Nome = null;
+            usuarioInvalido.Email = _faker.Internet.Email();
             _repository.Cadastrar(usuarioInvalido);
         });
 
-        //Nome, email, e senha preenchido 
+        //Somente senha preenchida
         Assert.Throws<Exception>(() =>
         {
+            usuarioInvalido.Email = null;
+            usuarioInvalido.Nome = null;
+            usuarioInvalido.Senha = _faker.Internet.Password(12, true, prefix: "Senha");
             _repository.Cadastrar(usuarioInvalido);
         });
     }
+    [Test]
+    public void Alterar_DeveAtualizarDadosDoUsuario()
+    {
+        var usuario = GerarUsuarioFaker();
+        _repository.Cadastrar(usuario);
 
+        var novoEmail = _faker.Internet.Email();
+        usuario.Email = novoEmail;
+        _repository.Alterar(usuario);
+
+        var atualizado = _repository.ObterPorId(usuario.Id);
+
+        Assert.That(atualizado, Is.Not.Null);
+        Assert.That(atualizado!.Email, Is.EqualTo(novoEmail));
+    }
+    [Test]
+    public void Alterar_DeveLancarExcecao_QuandoUsuarioNaoExiste()
+    {
+        var usuarioFake = GerarUsuarioFaker();
+        Assert.Throws<Exception>(() => _repository.Alterar(usuarioFake));
+    }
     [Test]
     public void AlterarUsuario_DeveLancarExcecao_QuandoIdForInvalido()
     {
@@ -187,5 +169,23 @@ public class UsuarioRepositoryTests
 
         Assert.Throws<Exception>(() => _repository.Alterar(usuario));
     }
+    [Test]
+    public void Deletar_DeveRemoverUsuarioDoBanco()
+    {
+        var usuario = GerarUsuarioFaker();
+        _repository.Cadastrar(usuario);
+
+        _repository.Deletar(usuario.Id);
+
+        var removido = _repository.ObterPorId(usuario.Id);
+
+        Assert.That(removido, Is.Null);
+    }
+    [Test]
+    public void Deletar_DeveLancarExcecao_QuandoIdNaoExiste()
+    {
+        Assert.Throws<Exception>(() => _repository.Deletar(999999999));
+    }
+
 }
 

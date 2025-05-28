@@ -40,7 +40,6 @@ public class JogoTests
         Assert.That(jogo.UsuariosQueAdquiriram, Is.Empty);
         Assert.That(jogo.DataCriacao, Is.EqualTo(DateTime.Now).Within(TimeSpan.FromSeconds(2)));
     }
-
     [Test]
     public void CriarJogo_SemValores_DeveInicializarListaEDataCriacao()
     {
