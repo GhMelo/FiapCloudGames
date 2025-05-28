@@ -7,5 +7,6 @@
         public int UsuarioCadastroId { get; set; }
         public virtual Usuario UsuarioCadastro { get; set; } = null!;
         public virtual ICollection<UsuarioJogoAdquirido> UsuariosQueAdquiriram { get; set; } = new List<UsuarioJogoAdquirido>();
+        public virtual ICollection<Promocao> PromocoesAderidas { get; set; } = new List<Promocao>();
     }
 }

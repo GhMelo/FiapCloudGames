@@ -4,6 +4,7 @@ using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250528173720_migracao-correcao-promocoes-constraintpromocao")]
+    partial class migracaocorrecaopromocoesconstraintpromocao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -66,8 +69,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.HasKey("Id");
-
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("DATETIME")
                         .HasColumnName("DataCriacao");
@@ -88,6 +89,8 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("PromocaoAtiva")
                         .HasColumnType("BIT")
                         .HasColumnName("PromocaoAtiva");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("JogoId");
 

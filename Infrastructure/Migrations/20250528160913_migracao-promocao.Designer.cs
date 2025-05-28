@@ -4,6 +4,7 @@ using Infrastructure.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250528160913_migracao-promocao")]
+    partial class migracaopromocao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,18 +63,6 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entity.Promocao", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INT");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.HasKey("Id");
-
-                    b.Property<DateTime>("DataCriacao")
-                        .HasColumnType("DATETIME")
-                        .HasColumnName("DataCriacao");
-
                     b.Property<int>("JogoId")
                         .HasColumnType("INT")
                         .HasColumnName("JogoId");
@@ -89,12 +80,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("BIT")
                         .HasColumnName("PromocaoAtiva");
 
-                    b.HasIndex("JogoId");
+                    b.HasKey("JogoId");
 
-                    b.ToTable("Promocao", null, t =>
-                        {
-                            t.HasCheckConstraint("CK_Promocao_Porcentagem", "[Porcentagem] >= 0 AND [Porcentagem] <= 100");
-                        });
+                    b.ToTable("Promocao", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entity.Usuario", b =>
