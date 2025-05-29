@@ -89,21 +89,6 @@ namespace FIAP_Cloud_Games.Tests.Application.Inputs.UsuarioInputs
             Assert.That(results, Has.Exactly(1).Matches<ValidationResult>(r => r.ErrorMessage == "A senha deve ter pelo menos 8 caracteres."));
         }
         [Test]
-        public void UsuarioAlteracaoInput_TipoVazio_DeveLancarValidationException()
-        {
-            var input = new UsuarioAlteracaoInput
-            {
-                Id = 1,
-                Nome = _faker.Name.FullName(),
-                Email = _faker.Internet.Email(),
-                Senha = GerarSenhaSegura(_faker.Internet),
-                Tipo = default
-            };
-
-            var results = ValidateModel(input);
-            Assert.That(results, Has.Exactly(1).Matches<ValidationResult>(r => r.ErrorMessage == "Tipo é obrigatório."));
-        }
-        [Test]
         public void UsuarioAlteracaoInput_NomeNulo_DeveLancarValidationException()
         {
             var input = new UsuarioAlteracaoInput

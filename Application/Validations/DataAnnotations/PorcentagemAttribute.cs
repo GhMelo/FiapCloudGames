@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
 
 namespace Application.Validations.DataAnnotations
 {
@@ -9,8 +8,8 @@ namespace Application.Validations.DataAnnotations
         {
             var porcentagem = Convert.ToInt16(value);
 
-            if (porcentagem < 0 || porcentagem > 100)
-                return new ValidationResult($"A porcentagem deve ser entre 0 e 100");
+            if (porcentagem < 1 || porcentagem > 100)
+                return new ValidationResult($"A porcentagem deve ser entre 1 e 100");
 
             return ValidationResult.Success;
         }

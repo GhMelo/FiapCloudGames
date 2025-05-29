@@ -3,14 +3,19 @@ using Application.Input.PromocaoInput;
 using Application.Interfaces.IService;
 using Domain.Entity;
 using Domain.Interfaces.IRepository;
+using Infrastructure.Repository;
 
 namespace Application.Services
 {
     public class PromocaoService : IPromocaoService
     {
         private readonly IPromocaoRepository _promocaoRepository;
-        public PromocaoService(IPromocaoRepository promocaoRepository)
-            => _promocaoRepository = promocaoRepository;
+        private readonly IJogoRepository _jogoRepository;
+        public PromocaoService(IPromocaoRepository promocaoRepository, IJogoRepository jogoRepository)
+        {
+            _promocaoRepository = promocaoRepository;
+            _jogoRepository = jogoRepository;
+        }
 
         public void AlterarPromocao(PromocaoAlteracaoInput promocaoAlteracaoInput)
         {
@@ -26,7 +31,7 @@ namespace Application.Services
             var promocaoCadastro = new Promocao()
             {
                 NomePromocao = promocaoCadastroInput.NomePromocao,
-                JogoId = promocaoCadastroInput.JogoId,
+                JogoId = _jogoRepository.ObterPorId(promocaoCadastroInput.JogoId).Id,
                 Porcentagem = promocaoCadastroInput.Porcentagem,
                 PromocaoAtiva = promocaoCadastroInput.PromocaoAtiva
             };

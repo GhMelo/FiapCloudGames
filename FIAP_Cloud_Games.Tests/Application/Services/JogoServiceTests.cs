@@ -220,12 +220,10 @@ namespace FIAP_Cloud_Games.Tests.Application.Services
         [Test]
         public void DeletarJogo_DeveLancarExcecao_QuandoJogoNaoExiste()
         {
-            // Arrange
             var id = _faker.Random.Int(1, 1000);
 
             _jogoRepositoryMock.Setup(r => r.Deletar(id)).Throws(new InvalidOperationException("Jogo não encontrado"));
 
-            // Act & Assert
             Assert.Throws<InvalidOperationException>(() => _jogoService.DeletarJogo(id));
         }
     }
