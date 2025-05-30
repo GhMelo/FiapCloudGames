@@ -94,6 +94,16 @@ namespace Application.Services
                 Tipo = (TipoUsuarioDto)jogo.UsuarioCadastro.Tipo,
             };
 
+            jogoDto.PromocoesAderidas = jogo.PromocoesAderidas.Select(pa => new PromocaoDto()
+            {
+                Id = pa.Id,
+                DataCriacao = pa.DataCriacao,
+                JogoId = pa.JogoId,
+                NomePromocao = pa.NomePromocao,
+                Porcentagem = pa.Porcentagem,
+                PromocaoAtiva = pa.PromocaoAtiva
+            }).ToList();
+
             return jogoDto;
         }
 
@@ -149,6 +159,16 @@ namespace Application.Services
                 Tipo = (TipoUsuarioDto)jogo.UsuarioCadastro.Tipo,
             };
 
+            jogoDto.PromocoesAderidas = jogo.PromocoesAderidas.Select(pa => new PromocaoDto()
+            {
+                Id = pa.Id,
+                DataCriacao = pa.DataCriacao,
+                JogoId = pa.JogoId,
+                NomePromocao = pa.NomePromocao,
+                Porcentagem = pa.Porcentagem,
+                PromocaoAtiva = pa.PromocaoAtiva
+            }).ToList();
+
             return jogoDto;
         }
 
@@ -187,6 +207,15 @@ namespace Application.Services
                         Tipo = (TipoUsuarioDto)u.Usuario.Tipo
                     }
                 }).ToList(),
+                PromocoesAderidas = tj.PromocoesAderidas.Select(pa => new PromocaoDto()
+                {
+                    Id = pa.Id,
+                    DataCriacao = pa.DataCriacao,
+                    JogoId = pa.JogoId,
+                    NomePromocao = pa.NomePromocao,
+                    Porcentagem = pa.Porcentagem,
+                    PromocaoAtiva = pa.PromocaoAtiva
+                }).ToList()
             }).ToList();
 
             return jogoDto;
