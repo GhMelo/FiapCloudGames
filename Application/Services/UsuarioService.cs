@@ -92,7 +92,15 @@ namespace Application.Services
                             Email = uj.Usuario.Email,
                             Senha = uj.Usuario.Senha,
                             Tipo = (TipoUsuarioDto)uj.Usuario.Tipo,
-                        }
+                        },
+                        PromocoesAderidas = uj.Jogo.PromocoesAderidas.Select(p => new PromocaoDto
+                        {
+                            Id = p.Id,
+                            NomePromocao = p.NomePromocao,
+                            Porcentagem = p.Porcentagem,
+                            PromocaoAtiva = p.PromocaoAtiva,
+                            DataCriacao = p.DataCriacao,
+                        }).ToList()
                     }
                 }).ToList()
             }
@@ -140,7 +148,15 @@ namespace Application.Services
                         Email = uj.Usuario.Email,
                         Senha = uj.Usuario.Senha,
                         Tipo = (TipoUsuarioDto)uj.Usuario.Tipo,
-                    }
+                    },
+                    PromocoesAderidas = uj.Jogo.PromocoesAderidas.Select(p => new PromocaoDto
+                    {
+                        Id = p.Id,
+                        NomePromocao = p.NomePromocao,
+                        Porcentagem = p.Porcentagem,
+                        PromocaoAtiva = p.PromocaoAtiva,
+                        DataCriacao = p.DataCriacao,
+                    }).ToList()
                 }
             }).ToList();
 
@@ -186,7 +202,15 @@ namespace Application.Services
                         Email = uj.Usuario.Email,
                         Senha = uj.Usuario.Senha,
                         Tipo = (TipoUsuarioDto)uj.Usuario.Tipo,
-                    }
+                    },
+                    PromocoesAderidas = uj.Jogo.PromocoesAderidas.Select(p => new PromocaoDto
+                    {
+                        Id = p.Id,
+                        NomePromocao = p.NomePromocao,
+                        Porcentagem = p.Porcentagem,
+                        PromocaoAtiva = p.PromocaoAtiva,
+                        DataCriacao = p.DataCriacao,
+                    }).ToList()
                 }
             }).ToList();
 

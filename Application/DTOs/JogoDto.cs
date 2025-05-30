@@ -6,7 +6,8 @@
         public DateTime DataCriacao { get; set; }
         public string Titulo { get; set; } = null!;
         public string Produtora { get; set; } = null!;
-        public  UsuarioDto UsuarioCadastro { get; set; } = null!;
-        public  ICollection<UsuarioJogoAdquiridoDto>? UsuariosQueAdquiriram { get; set; } = new List<UsuarioJogoAdquiridoDto>();
+        public UsuarioDto UsuarioCadastro { get; set; } = null!;
+        public ICollection<UsuarioJogoAdquiridoDto>? UsuariosQueAdquiriram { get; set; } = new List<UsuarioJogoAdquiridoDto>();
+        public ICollection<PromocaoDto>? PromocoesAderidas { get; set; } = new List<PromocaoDto>();
     }
 }
