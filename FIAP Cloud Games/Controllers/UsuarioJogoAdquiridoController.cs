@@ -1,5 +1,6 @@
 ﻿using Application.Input.UsuarioJogoInput;
 using Application.Interfaces.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP_Cloud_Games.Controllers
@@ -16,6 +17,7 @@ namespace FIAP_Cloud_Games.Controllers
 
 
         [HttpGet("/JogosAdquiridosUltimos60dias/")]
+        [Authorize(Policy = "Administrador")]
         public IActionResult GetUsuarioJogosAdquiridosUltimos60DiasDapper()
         {
             try
@@ -30,6 +32,7 @@ namespace FIAP_Cloud_Games.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Post([FromBody] UsuarioJogoAdquiridoCadastroInput input)
         {
             try

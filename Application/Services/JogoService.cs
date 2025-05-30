@@ -68,7 +68,6 @@ namespace Application.Services
                         Id = ua.Usuario.Id,
                         Nome = ua.Usuario.Nome,
                         Email = ua.Usuario.Email,
-                        Senha = ua.Usuario.Senha,
                         Tipo = (TipoUsuarioDto)ua.Usuario.Tipo,
                     }
                 },
@@ -78,7 +77,6 @@ namespace Application.Services
                     DataCriacao = ua.DataCriacao,
                     Nome = ua.Usuario.Nome,
                     Email = ua.Usuario.Email,
-                    Senha = ua.Usuario.Senha,
                     Tipo = (TipoUsuarioDto)ua.Usuario.Tipo,
                 }
 
@@ -90,7 +88,6 @@ namespace Application.Services
                 DataCriacao = jogo.UsuarioCadastro.DataCriacao,
                 Nome = jogo.UsuarioCadastro.Nome,
                 Email = jogo.UsuarioCadastro.Email,
-                Senha = jogo.UsuarioCadastro.Senha,
                 Tipo = (TipoUsuarioDto)jogo.UsuarioCadastro.Tipo,
             };
 
@@ -133,7 +130,6 @@ namespace Application.Services
                         Id = ua.Usuario.Id,
                         Nome = ua.Usuario.Nome,
                         Email = ua.Usuario.Email,
-                        Senha = ua.Usuario.Senha,
                         Tipo = (TipoUsuarioDto)ua.Usuario.Tipo,
                     }
                 },
@@ -143,7 +139,6 @@ namespace Application.Services
                     DataCriacao = ua.DataCriacao,
                     Nome = ua.Usuario.Nome,
                     Email = ua.Usuario.Email,
-                    Senha = ua.Usuario.Senha,
                     Tipo = (TipoUsuarioDto)ua.Usuario.Tipo,
                 }
 
@@ -155,7 +150,6 @@ namespace Application.Services
                 DataCriacao = jogo.UsuarioCadastro.DataCriacao,
                 Nome = jogo.UsuarioCadastro.Nome,
                 Email = jogo.UsuarioCadastro.Email,
-                Senha = jogo.UsuarioCadastro.Senha,
                 Tipo = (TipoUsuarioDto)jogo.UsuarioCadastro.Tipo,
             };
 
@@ -188,7 +182,6 @@ namespace Application.Services
                     DataCriacao = tj.UsuarioCadastro.DataCriacao,
                     Nome = tj.UsuarioCadastro.Nome,
                     Email = tj.UsuarioCadastro.Email,
-                    Senha = tj.UsuarioCadastro.Senha,
                     Tipo = (TipoUsuarioDto)tj.UsuarioCadastro.Tipo,
                 },
                 UsuariosQueAdquiriram = tj.UsuariosQueAdquiriram.Select(u => new UsuarioJogoAdquiridoDto
@@ -203,7 +196,6 @@ namespace Application.Services
                         DataCriacao = u.Usuario.DataCriacao,
                         Nome = u.Usuario.Nome,
                         Email = u.Usuario.Email,
-                        Senha = u.Usuario.Senha,
                         Tipo = (TipoUsuarioDto)u.Usuario.Tipo
                     }
                 }).ToList(),

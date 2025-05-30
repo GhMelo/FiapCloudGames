@@ -19,6 +19,7 @@ namespace FIAP_Cloud_Games.Controllers
             
 
         [HttpGet]
+        [Authorize(Policy = "UsuarioPadrao")]
         public IActionResult Get()
         {
             try
@@ -48,6 +49,7 @@ namespace FIAP_Cloud_Games.Controllers
         }
 
         [HttpGet("/JogoPorTitulo/{titulo}")]
+        [Authorize(Policy = "UsuarioPadrao")]
         public IActionResult GetJogoPorTitulo([FromRoute] string titulo)
         {
             try

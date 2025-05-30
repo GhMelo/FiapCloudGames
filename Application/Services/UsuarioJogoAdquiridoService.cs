@@ -23,8 +23,8 @@ namespace Application.Services
         {
             var usuarioJogoAdquirido = new UsuarioJogoAdquirido()
             {
-                UsuarioId = _jogoRepository.obterPorTitulo(usuarioJogoAdquiridoCadastroInput.TituloJogo).Id,
-                JogoId = _usuarioRepository.obterPorNome(usuarioJogoAdquiridoCadastroInput.NomeUsuario).Id
+                JogoId = _jogoRepository.obterPorTitulo(usuarioJogoAdquiridoCadastroInput.TituloJogo).Id,
+                UsuarioId = _usuarioRepository.obterPorNome(usuarioJogoAdquiridoCadastroInput.NomeUsuario).Id
             };
             _usuarioJogoAdquiridoRepository.Cadastrar(usuarioJogoAdquirido);
         }

@@ -39,6 +39,7 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("Administrador", policy => policy.RequireRole("Administrador"));
+    options.AddPolicy("UsuarioPadrao", policy => policy.RequireRole("UsuarioPadrao"));
 });
 
 builder.Services.AddControllers();

@@ -1,5 +1,6 @@
 ﻿using Application.Input.PromocaoInput;
 using Application.Interfaces.IService;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FIAP_Cloud_Games.Controllers
@@ -13,7 +14,9 @@ namespace FIAP_Cloud_Games.Controllers
         {
             _promocaoService = promocaoService;
         }
+
         [HttpGet]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Get()
         {
             try
@@ -27,6 +30,7 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
         [HttpGet("/TodasAtivas/")]
+        [Authorize(Policy = "Administrador")]
         public IActionResult GetAtivas()
         {
             try
@@ -40,6 +44,7 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
         [HttpGet("/TodasInativas/")]
+        [Authorize(Policy = "Administrador")]
         public IActionResult GetInativas()
         {
             try
@@ -54,6 +59,7 @@ namespace FIAP_Cloud_Games.Controllers
         }
 
         [HttpGet("/PromocaoPorId/{id:int}")]
+        [Authorize(Policy = "Administrador")]
         public IActionResult GetPromocaoPorId([FromRoute] int id)
         {
             try
@@ -68,6 +74,7 @@ namespace FIAP_Cloud_Games.Controllers
         }
 
         [HttpGet("/PromocaoPorNomePromocao/{nomePromocao}")]
+        [Authorize(Policy = "Administrador")]
         public IActionResult GetPromocaoPorNomePromocao([FromRoute] string nomePromocao)
         {
             try
@@ -82,6 +89,7 @@ namespace FIAP_Cloud_Games.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Post([FromBody] PromocaoCadastroInput input)
         {
             try
@@ -95,6 +103,7 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
         [HttpPut]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Put([FromBody] PromocaoAlteracaoInput input)
         {
             try
@@ -108,6 +117,7 @@ namespace FIAP_Cloud_Games.Controllers
             }
         }
         [HttpDelete("{id:int}")]
+        [Authorize(Policy = "Administrador")]
         public IActionResult Delete([FromRoute] int id)
         {
             try
