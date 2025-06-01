@@ -11,17 +11,19 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Carregar configuração externa
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .Build();
 
-// Add services to the container.
+#region Configuração de Autenticação e Autorização
 
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer(options =>
+})
+.AddJwtBearer(options =>
 {
     options.RequireHttpsMetadata = false;
     options.SaveToken = true;
@@ -42,10 +44,15 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("UsuarioPadrao", policy => policy.RequireRole("UsuarioPadrao"));
 });
 
+#endregion
+
+#region Configuração dos Controllers e Swagger
+
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c=>
+
+builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Fiap Cloud Games", Version = "v1" });
 
@@ -75,12 +82,18 @@ builder.Services.AddSwaggerGen(c=>
             new List<string>()
         }
     });
-}
-);
+});
+
+#endregion
+
+#region Configuração do MongoDB
 
 builder.Services.Configure<MongoSettings>(
     builder.Configuration.GetSection("MongoSettings"));
 
+#endregion
+
+#region Configuração do Entity Framework e Banco de Dados
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
@@ -88,20 +101,29 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseLazyLoadingProxies();
 }, ServiceLifetime.Scoped);
 
+#endregion
+
+#region Registro de Repositórios e Serviços
+
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IPromocaoRepository, PromocaoRepository>();
 builder.Services.AddScoped<IJogoRepository, JogoRepository>();
 builder.Services.AddScoped<IUsuarioJogoAdquiridoRepository, UsuarioJogoAdquiridoRepository>();
+
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IPromocaoService, PromocaoService>();
 builder.Services.AddScoped<IJogoService, JogoService>();
 builder.Services.AddScoped<IUsuarioJogoAdquiridoService, UsuarioJogoAdquiridoService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+
 builder.Services.AddScoped(typeof(IMongoRepository<>), typeof(MongoRepository<>));
+
+#endregion
+
+#region Configuração do Pipeline HTTP
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -118,3 +140,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+#endregion

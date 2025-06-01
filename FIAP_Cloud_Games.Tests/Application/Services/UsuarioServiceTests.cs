@@ -128,10 +128,8 @@ namespace FIAP_Cloud_Games.Tests.Application.Services
         [Test]
         public void ObterTodosUsuariosDto_RetornaNulo_DeveLancarExcecao()
         {
-            // Arrange
             _usuarioRepositoryMock.Setup(r => r.ObterTodos()).Returns((List<Usuario>)null);
 
-            // Act & Assert
             Assert.Throws<ArgumentNullException>(() => _usuarioService.ObterTodosUsuariosDto());
         }
         [Test]
