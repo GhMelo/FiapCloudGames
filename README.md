@@ -37,20 +37,21 @@ Após executar as migrations, é necessário inserir manualmente um usuário com
 INSERT INTO FiapCloudGames.dbo.Usuario (Nome, Email, Senha, Tipo, DataCriacao)
 VALUES ('Admin','admin@fiapcloudgames.com', 'SenhaForte123.',1, GETDATE());
 
-5 Executando a aplicação
+5. Executando a aplicação
 Se estiver no visual studio é só executar pela propria IDE, se não, use o dotnet run pelo powershell de desenvolvedor, na pasta da API principal. O swagger estará disponível no localhost.
 Powershell desenvolvedor: 
 Navegue ate Fiap Cloud Games
 dotnet dev-certs https –trust
 dotnet run –launch-profile “https”
 https://localhost:7206/swagger/index.html
-6. Autenticação
 
+6. Autenticação
 A API usa autenticação JWT. Para acessar os endpoints protegidos:
 Realize o login para obter um token.
 Envie o token no cabeçalho Authorization:
 Authorization: Bearer {token}
-7 Executando os testes
+
+7. Executando os testes
 Para executar os testes no visual studio é só clicar com o botão direito no projeto de testes e clicar em “Executar testes” ou por linha de código, navegue até a raiz do projeto e execute o comando dotnet test no powershell de desenvolvedor
 
 
