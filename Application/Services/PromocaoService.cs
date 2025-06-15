@@ -3,7 +3,6 @@ using Application.Input.PromocaoInput;
 using Application.Interfaces.IService;
 using Domain.Entity;
 using Domain.Interfaces.IRepository;
-using Infrastructure.Repository;
 
 namespace Application.Services
 {
