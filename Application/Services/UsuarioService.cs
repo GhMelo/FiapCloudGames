@@ -10,8 +10,12 @@ namespace Application.Services
     public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _usuarioRepository;
-        public UsuarioService(IUsuarioRepository usuarioRepository)
-            => _usuarioRepository = usuarioRepository;
+        private readonly IKafkaProducerService _kafkaProducer;
+        public UsuarioService(IUsuarioRepository usuarioRepository, IKafkaProducerService kafkaProducerService)
+        {
+            _usuarioRepository = usuarioRepository;
+            _kafkaProducer = kafkaProducerService;
+        }
 
         public void AlterarUsuario(UsuarioAlteracaoInput usuarioAlteracaoInput)
         {
@@ -35,7 +39,7 @@ namespace Application.Services
             _usuarioRepository.Cadastrar(Usuario);
         }
 
-        public void CadastrarUsuarioPadrao(UsuarioCadastroInput UsuarioCadastroInput)
+        public async void CadastrarUsuarioPadrao(UsuarioCadastroInput UsuarioCadastroInput)
         {
             var Usuario = new Usuario()
             {
@@ -45,6 +49,13 @@ namespace Application.Services
                 Senha = UsuarioCadastroInput.Senha
             };
             _usuarioRepository.Cadastrar(Usuario);
+
+            await _kafkaProducer.SendEmailMessageAsync(new EmailMessageDto
+            {
+                Nome = UsuarioCadastroInput.Nome,
+                Email = UsuarioCadastroInput.Email,
+                Mensagem = $"Olá {UsuarioCadastroInput.Nome}, seu cadastro foi realizado com sucesso!"
+            });
         }
 
         public void DeletarUsuario(int id)

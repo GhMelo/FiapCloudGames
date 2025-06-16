@@ -1,5 +1,6 @@
 ﻿using Application.Input.UsuarioInput;
 using Application.Interfaces.IService;
+using Confluent.Kafka;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -62,7 +63,7 @@ namespace FIAP_Cloud_Games.Controllers
         }
 
         [HttpPost("/UsuarioPadrao")]
-        public IActionResult PostUsuarioPadrao([FromBody] UsuarioCadastroInput input)
+        public async Task<IActionResult> PostUsuarioPadrao([FromBody] UsuarioCadastroInput input)
         {
             try
             {
